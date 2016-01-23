@@ -7,13 +7,12 @@ Created on Oct 7, 2014
 import glob, os
 import numpy as np
 import random
-
-
+import pandas as pd
+from pprint import pprint
 #----------------------------------------------------------------------
 class DocumentsAccess():   
     # Return array of sentences in the directory
-    @staticmethod
-    def parseFromDirectory(directoryPath):
+    def parseFromDirectory(self, directoryPath):
         arrDocuments = []
         for name in os.listdir(directoryPath):
             if os.path.isfile(os.path.join(directoryPath, name)):
@@ -22,8 +21,7 @@ class DocumentsAccess():
                     arrDocuments.append(document)
         return arrDocuments     
     
-    @staticmethod
-    def readingDatabase():
+    def readingDatabaseEn(self):
         posDocs = DocumentsAccess.parseFromDirectory('Database/txt_sentoken/pos/')
         negDocs = DocumentsAccess.parseFromDirectory('Database/txt_sentoken/neg/')
         posLabels = np.ones(len(posDocs)).tolist()
@@ -35,13 +33,21 @@ class DocumentsAccess():
         random.seed(12345)
         random.shuffle(z)
         allDocs, allLabels = zip(*z)
-        return allDocs, allLabels
-            
-            
-
-
+        return allDocs, allLabels    
+       
+    def readingDatabaseTetum(self, filePath, sheet):
+        xl = pd.ExcelFile(filePath)
+        df = xl.parse(sheet, header=None)
+        df.head()
+        return df
+              
 #----------------------------------------------------------------------
 if __name__ == "__main__":
-    allDocs, allLabels = DocumentsAccess.readingDatabase()
-    print allLabels[:10]
+
+    filePath = "Database/Sentiment/Sentiment/PoliceRelations/positive.xlsx"
+    sheet = "Sheet1"
+    da = DocumentsAccess()
+    pos = da.readingDatabaseTetum(filePath, sheet)
+    pprint(pos[0][0])
+
     

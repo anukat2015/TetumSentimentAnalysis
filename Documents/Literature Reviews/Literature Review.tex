@@ -1,0 +1,70 @@
+\documentclass[runningheads,a4paper]{article}
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+
+\usepackage{url}
+\urldef{\mailsa}\path|{nhthien}@jaist.ac.jp|    
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+%\usepackage[ruled,vlined,commentsnumbered]{algorithm2e}
+\usepackage{cite}
+\usepackage{url}
+%\usepackage{algorithmicx}
+%\usepackage[ruled]{algorithm}
+%\usepackage{algpseudocode}
+\usepackage[fleqn]{amsmath}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{color}
+\usepackage{longtable}
+\usepackage[bookmarks]{hyperref}
+\usepackage{threeparttable}
+\usepackage[algo2e,linesnumbered,boxed]{algorithm2e}
+\usepackage{hyperref}
+\thispagestyle{empty}
+%\pagestyle{empty} %no page number, no running heads.
+\begin{document}
+\title{Tetum Sentiment Analysis}
+\author{Thien Hai Nguyen \\ nhthien@jaist.ac.jp}
+\maketitle
+\section{Build from scratch}
+We can build the model by ourselves using nltk and scikit-learn libraries. We can choose supervised or unsupervised approach. As you know, Tetum is a scare language, there is no syntactic parsing, dependency parsing, or sentiment resources (Wordnet or Sentiwordnet) for this language. Therefore, we cannot utilize complicated methods from English language. However, we can build a model which is language independent. In other words, we do not consider syntactic, semantic features.
+\subsection{Supervised Approach}
+\subsubsection{Approach 1} Using SVM to classify each documents to positive, neutral, negative. Features are bag-of-words, n-grams.
+\begin{itemize}
+	\item \textbf{Pros}: It's very fast to build the model. For online learning, we can use incremental training algorithm in scikit-learn library (SGDClassifer).
+	\item \textbf{Cons}: We need to manually annotate sentiment labels for each documents by ourselves (need a large annotated documents for good performance). However, to overcome the lack of training data for Tetum, we can use translation method to generate Tetum traning data from English data. Of course, the accuracy of translation will affect the final result. Another method to overcome the lack of training data is to use co-training method \footnote{https://en.wikipedia.org/wiki/Co-training}.
+\end{itemize}
+\subsubsection{Approach 2} Joint training with English sentiment analysis. $\Rightarrow$ Need parallel corpus $\Rightarrow$ Using machine translation.
+	\begin{itemize}
+		\item \textbf{Pros}: Compared with Approach 1, the accuracy could be improved 
+		\item \textbf{Cons}: The model could be complicated and take times to build. The translation accuracy will affect the final result. In addition, we have to design the incremental training method (online learning) for this model.
+	\end{itemize}
+
+\subsection{Unsupervised Approach}
+\subsubsection{Approach 3} Use Tetum sentiment resources (opinion word lists) to calculate the sentiment score for each document. Because there is no such resource, we can generate them using a bilingual dictionary. (Utilize the translation systems from Google, Bing, Babylon or your translation system).
+	\begin{itemize}
+		\item \textbf{Pros}: It's very fast to build the model.
+		\item \textbf{Cons}: The accuracy translation affects the final result.
+	\end{itemize}
+
+\section{Google Prediction API (Approach 4)}
+We just extract features (bag-of-words, n-grams) and use Google prediction API. We don't know what kind of algorithms will be used. The algorithms are black-boxes in  here, usually linear models. Only supervised algorithms can be used to do sentiment analysis.
+$\Rightarrow$ Fast, easy, similar to Approach 1.
+	\begin{itemize}
+		\item \textbf{Pros}: It's very fast to build the model. Google prediction API supports incremental training for online learning.
+		\item \textbf{Cons}: Similar to Approach 1. In addition, because the algorithm is black box, we can not modify the algorithm
+	\end{itemize}
+\section{Conclusion}
+We can use Approach 1, Approach 3 or Approach 4 to build the model quickly. Which method will produce the better results? It could be Approach 1 or Approach 4 (Need to empirical evaluation from test set).
+
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{ieeetr}
+\bibliography{bibliography}
+
+\end{document}

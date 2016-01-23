@@ -1,0 +1,51 @@
+1) Build from scratch (Using Python NLTK library):
+	- Supervised Approach:
+		+ Approach 1: Using SVM to classify each documents to pos, neu, neg. Features are bag-of-words, n-grams.
+			If we don't have enough training data for Tetum, use translation to generate tetum traning data from english data.
+		+ Approach 2: Joint training with English sentiment analysis. => Need parallel corpus => Using translation.
+			
+
+	- Unsupervised Approach:
+		+ Approach 3: generate sentiment resources (opinion word lists) using a bilingual dictionary.
+(Utilize the translation systems from Google, Bing, Babylon and client's translation system)
+
+Pros:
+	- Can easily integrate additional information (join training, translation) to improve the accuracy.
+Cons:
+	- Have to design the learning algorithm for incremental training (online learning). It is neccessary for updating the model when a new data coming. => One good point, some algorithms in scikit-learn library were implemented with incremental (online) learning. (SGDClassifer)
+
+2) Google Prediction API approach: check whether it supports Tetum language. => We just extract features (bag-of-words, n-grams) and use google prediction api. We don't know what kind of algorithms will be used. The algorithms are black-boxes in  here, usually linear models.
+=> Fast, easy, similar to Approach 1 (using NLTK library).
+Pros:
+	- It support batch training and incremental training. Therefore, when a new data comining, we can re-train the model by updating information from the new data rather than re-train the whole model.
+Cons:
+	- We don't know and cannot modify the algorithm.
+
+3) Evaluation:
+- Need human annotated sentiments for each document. (As much as possible, 100 is a fair starting point). 
+- Metrics: Accuracy, Precision, Recall, F-measure.
+
+4) Building web app:
+- Using php
+- Call the python from the web using cgi.
+
+
+
+Some additional requirements:
+- Speed: have to use online learning (incremental training) to update new information from new data quickly. We should avoid using traditional batch training algorithm.
+
+
+
+Flow chart:
+
+- Main Search:
+	+ Input: an URL or paragraphs. => Need crawl data from given URL.
+	+ Auto detect URLtype and Indicators => Multi-class classification.
+- Result:
+	+ Run the sentiment analysis model to predict +,0,- for this text.
+	+ Save the new information into database.
+	+ Update the training model ????
+- Sentiment Timeline:
+	+ Choose filter criteria (Indicator, date time, input type, months)
+	+ Show the plot.
+	

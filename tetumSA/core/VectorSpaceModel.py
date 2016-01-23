@@ -5,9 +5,7 @@ from nltk.classify.scikitlearn import SklearnClassifier
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
-import numpy as np
-from curses.ascii import isspace
-from scipy.sparse.base import issparse
+
 class VectorSpaceModel:
 #return dictVectorizer & tfidfTran & tfidfTran
 	def __init(self):
@@ -106,7 +104,7 @@ if __name__ == "__main__":
 					["two", "three", "four"],
 					["two","three"],
 					["I", "have", "three", "three"]]
-	vsm = VectorSpaceModel.createInstance("BooleanWeighting")
+	vsm = VectorSpaceModel.createInstance("TFIDF")
 	(trainTable,testTable)=vsm.runCutoff(listDocuments,2)
 	print "Train Table:"
 	print trainTable
