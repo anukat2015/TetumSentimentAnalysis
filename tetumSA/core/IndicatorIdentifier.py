@@ -19,7 +19,7 @@ from nltk import FreqDist
 
 class IndicatorIdentifier(object):
     '''
-    classdocs
+    Identify the an indicator for a document
     '''
 
 
@@ -54,6 +54,7 @@ class IndicatorIdentifier(object):
             else:
                 X_test.append(content)
                 Y_test.append(labels)
+                
                 
            
        

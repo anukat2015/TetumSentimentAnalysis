@@ -15,7 +15,7 @@ import random
 import TetumPreprocessing as tp
 class SentimentAnalysis(object):
     '''
-    classdocs
+    Identify the a sentiment for each document.
     '''
 
 
